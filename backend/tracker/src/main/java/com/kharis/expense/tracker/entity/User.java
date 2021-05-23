@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(
-        name = "user",
+        name = "users",
         uniqueConstraints = {
                 @UniqueConstraint(name="email_unique", columnNames = "email"),
                 @UniqueConstraint(name="username_unique", columnNames = "username")

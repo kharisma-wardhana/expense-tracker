@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -27,6 +27,7 @@ public class UserController {
         UserResponse userResponse = userService.create(request);
         return ApiResponse.<UserResponse>builder()
                 .code(HttpStatus.CREATED.value())
+                .message("User created")
                 .status(HttpStatus.CREATED.name())
                 .data(userResponse)
                 .build();

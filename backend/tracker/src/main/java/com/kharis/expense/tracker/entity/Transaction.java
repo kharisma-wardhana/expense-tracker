@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,12 +18,6 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id")
     private Long transactionId;
-
-    @OneToOne
-    private Long categoryId;
-
-    @OneToOne
-    private Long userId;
 
     private double amount;
 

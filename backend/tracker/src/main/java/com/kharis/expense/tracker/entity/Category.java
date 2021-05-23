@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(
-        name = "category",
+        name = "categories",
         uniqueConstraints = {
                 @UniqueConstraint(name="category_name_unique", columnNames = "category_name")
         }
@@ -22,9 +22,6 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long categoryId;
-
-    @OneToMany
-    private User user;
 
     @Column(name = "category_name")
     private String categoryName;
