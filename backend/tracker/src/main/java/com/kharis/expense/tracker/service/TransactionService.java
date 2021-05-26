@@ -3,6 +3,12 @@ package com.kharis.expense.tracker.service;
 import com.kharis.expense.tracker.model.request.CreateTransactionRequest;
 import com.kharis.expense.tracker.model.response.TransactionResponse;
 
+import java.util.List;
+
 public interface TransactionService {
-    public TransactionResponse create(CreateTransactionRequest request);
+    TransactionResponse create(CreateTransactionRequest request);
+
+    List<TransactionResponse> getAllTransactionByUserId(Long userId);
+
+    TransactionResponse getTransactionDetail(Long transactionId);
 }
