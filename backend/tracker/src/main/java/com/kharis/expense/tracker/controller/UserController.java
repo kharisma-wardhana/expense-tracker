@@ -10,10 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 @AllArgsConstructor
 public class UserController {
     @Autowired
@@ -25,7 +26,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ApiResponse<UserResponse> create(
-            @RequestBody CreateUserRequest request
+            @Valid @RequestBody CreateUserRequest request
     ) {
         UserResponse userResponse = userService.create(request);
         return ApiResponse.<UserResponse>builder()

@@ -24,6 +24,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionResponse create(CreateTransactionRequest request) {
         Transaction newTransaction = Transaction.builder()
+                .userId(request.getUserId())
+                .categoryId(request.getCategoryId())
                 .amount(request.getAmount())
                 .notes(request.getNotes())
                 .createdAt(new Date())
@@ -54,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionResponse> getAllTransactionByUserId(Long userId) {
-        Optional<Transaction> allTransaction = transactionRepo.findById(userId);
+        Optional<Transaction> allTransaction = transactionRepo.findByUserId(userId);
         List<TransactionResponse> allTransactionResponse = new ArrayList<>();
         if (allTransaction.isPresent()) {
             TransactionResponse transactionResponse = TransactionResponse.builder()

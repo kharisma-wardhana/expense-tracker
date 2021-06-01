@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class TransactionController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ApiResponse<TransactionResponse> create(
-            @RequestBody CreateTransactionRequest request
+            @Valid @RequestBody CreateTransactionRequest request
     ) {
         try {
             TransactionResponse transactionResponse = transactionService.create(request);
@@ -65,12 +66,12 @@ public class TransactionController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ApiResponse<List<TransactionResponse>> getAllTransactionUserId(
-            @RequestParam(name = "userid") Long userId,
+            @RequestParam(name = "userid") String userId,
             @RequestParam(name = "page", defaultValue = "1") String page,
             @RequestParam(name = "size", defaultValue = "25") String size
     ) {
         try {
-            List<TransactionResponse> allTransaction = transactionService.getAllTransactionByUserId(userId);
+            List<TransactionResponse> allTransaction = transactionService.getAllTransactionByUserId(Long.parseLong(userId));
             return ApiResponse.<List<TransactionResponse>>builder()
                     .code(HttpStatus.OK.value())
                     .status(HttpStatus.OK.name())
@@ -87,7 +88,7 @@ public class TransactionController {
             return ApiResponse.<List<TransactionResponse>>builder()
                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                     .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
-                    .message("Transaction failed to created " + ex.getMessage())
+                    .message("Transaction failed to get data " + ex.getMessage())
                     .build();
         }
     }

@@ -21,6 +21,12 @@ public class Transaction {
     @Column(name = "transaction_id")
     private Long transactionId;
 
+    @ManyToOne(targetEntity = User.class)
+    private Long userId;
+
+    @OneToOne(targetEntity = Category.class)
+    private Long categoryId;
+
     private double amount;
 
     private String notes;

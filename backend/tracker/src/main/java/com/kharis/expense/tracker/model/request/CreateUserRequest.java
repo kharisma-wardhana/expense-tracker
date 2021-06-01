@@ -2,23 +2,24 @@ package com.kharis.expense.tracker.model.request;
 
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
 public class CreateUserRequest {
-    @NotBlank
+    @NotBlank(message = "Username is required")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Email is required")
+    @Email
     private String email;
 
-    @Max(value = 15)
+    @Length(max = 15)
     private String mobilePhone;
 
-    @NotBlank
-    @Min(value = 8)
+    @NotBlank(message = "Password is required")
+    @Length(min = 8)
     private String password;
 }
