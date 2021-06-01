@@ -10,5 +10,7 @@ public interface TransactionService {
 
     List<TransactionResponse> getAllTransactionByUserId(Long userId);
 
+    List<TransactionResponse> getAllTransactionByCategoryId(Long userId, Long categoryId);
+
     TransactionResponse getTransactionDetail(Long transactionId);
 }

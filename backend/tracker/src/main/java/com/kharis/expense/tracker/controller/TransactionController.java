@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/transaction")
@@ -66,12 +67,16 @@ public class TransactionController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ApiResponse<List<TransactionResponse>> getAllTransactionUserId(
-            @RequestParam(name = "userid") String userId,
+            @RequestParam(name = "userid") Long userId,
+            @RequestParam(name = "categoryid", required = false) Optional<Long> categoryId,
             @RequestParam(name = "page", defaultValue = "1") String page,
             @RequestParam(name = "size", defaultValue = "25") String size
     ) {
         try {
-            List<TransactionResponse> allTransaction = transactionService.getAllTransactionByUserId(Long.parseLong(userId));
+            List<TransactionResponse> allTransaction = transactionService.getAllTransactionByUserId(userId);
+            if (categoryId.isPresent()) {
+                allTransaction = transactionService.getAllTransactionByCategoryId(userId, categoryId.get());
+            }
             return ApiResponse.<List<TransactionResponse>>builder()
                     .code(HttpStatus.OK.value())
                     .status(HttpStatus.OK.name())

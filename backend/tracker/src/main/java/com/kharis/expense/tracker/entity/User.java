@@ -41,7 +41,8 @@ public class User {
     @Column(name = "login_count",length = 10)
     private Integer loginCount;
 
-    private boolean status;
+    @Column(length = 2)
+    private Integer status;
 
     @Column(name = "last_login")
     private Date lastLogin;
