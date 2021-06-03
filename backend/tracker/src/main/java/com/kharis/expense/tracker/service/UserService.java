@@ -9,4 +9,6 @@ public interface UserService {
     UserResponse create(CreateUserRequest request);
 
     List<UserResponse> getAllUser();
+
+    UserResponse getUserDetails(Long userId);
 }

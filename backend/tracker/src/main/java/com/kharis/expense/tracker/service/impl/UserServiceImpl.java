@@ -52,4 +52,15 @@ public class UserServiceImpl implements UserService {
 
         return allUserResponse;
     }
+
+    @Override
+    public UserResponse getUserDetails(Long userId) {
+        User user = userRepo.getById(userId);
+        return UserResponse.builder()
+                .id(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .mobilePhone(user.getMobilePhone())
+                .build();
+    }
 }

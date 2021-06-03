@@ -48,4 +48,17 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping(
+            value = "/{userid}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ApiResponse<UserResponse> getUserDetails(@PathVariable("userid") Long userId) {
+        UserResponse userResponse = userService.getUserDetails(userId);
+        return ApiResponse.<UserResponse>builder()
+                .code(HttpStatus.OK.value())
+                .status(HttpStatus.OK.name())
+                .message("Successfully get user details")
+                .data(userResponse)
+                .build();
+    }
 }
