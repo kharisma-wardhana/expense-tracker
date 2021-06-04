@@ -1,7 +1,7 @@
 part of 'widgets.dart';
 
-class CustomLoading extends StatelessWidget {
-  const CustomLoading({Key? key}) : super(key: key);
+class CustomButton extends StatelessWidget {
+  const CustomButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
