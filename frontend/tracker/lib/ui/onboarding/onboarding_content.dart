@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/shared/utils/screen_util.dart';
 import 'package:tracker/ui/onboarding/onboarding_data.dart';
 
 class OnboardingContent extends StatelessWidget {
@@ -19,6 +20,7 @@ class OnboardingContent extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
+            height: ScreenUtil.screenHeight * 0.75,
             child: Image.asset(
               onboardingData.contentData[onboardingData.currentPage]["image"]!,
               fit: BoxFit.contain,
@@ -33,7 +35,7 @@ class OnboardingContent extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(right: 8),
             height: 8,
-            width: onboardingData.currentPage == index ? 18 : 8,
+            width: onboardingData.currentPage == index ? 32 : 10,
             decoration: BoxDecoration(
               color: onboardingData.currentPage == index
                   ? Colors.blue

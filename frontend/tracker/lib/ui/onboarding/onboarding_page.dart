@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/shared/utils/screen_util.dart';
+import 'package:tracker/shared/router/page_router.dart';
+import 'package:tracker/ui/cubit/onboarding/onboarding_cubit.dart';
+import 'package:tracker/ui/home/home_page.dart';
 import 'package:tracker/ui/onboarding/onboarding_content.dart';
 import 'package:tracker/ui/onboarding/onboarding_data.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({Key? key}) : super(key: key);
+  static const String routeName = '/onboarding';
 
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
@@ -18,6 +22,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   void initState() {
     super.initState();
     data = new OnboardingData();
+    data.currentPage = 0;
     pageController = PageController(initialPage: 0);
   }
 
@@ -35,8 +40,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
         child: Stack(
           children: [
             Container(
-              width: double.infinity,
-              height: ScreenUtil.screenHeight * 0.75,
               child: PageView.builder(
                 controller: pageController,
                 onPageChanged: (val) {
@@ -58,12 +61,36 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          data.currentPage = data.contentData.length - 1;
+                        });
+                      },
                       child: Text("Skip"),
                     ),
                     Spacer(),
                     ElevatedButton(
-                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(100, 100),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (data.currentPage == data.contentData.length - 1) {
+                          await context
+                              .read<OnboardingCubit>()
+                              .setFirstInstall(true);
+                          PageRouter.pushClearStackNamed(
+                            context,
+                            HomePage.routeName,
+                          );
+                          return;
+                        }
+                        setState(() {
+                          data.currentPage++;
+                        });
+                      },
                       child: Text("Next"),
                     ),
                   ],

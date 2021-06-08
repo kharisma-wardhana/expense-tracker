@@ -5,19 +5,19 @@ class OnboardingData {
   final List<Map<String?, String?>> contentData = [
     {
       "title": "Onboarding A",
-      "image": "assets/images/onboarding-a.png",
+      "image": "assets/images/onboarding_A.png",
     },
     {
       "title": "Onboarding B",
-      "image": "assets/images/onboarding-b.png",
+      "image": "assets/images/onboarding_B.png",
     },
     {
       "title": "Onboarding C",
-      "image": "assets/images/onboarding-c.png",
+      "image": "assets/images/onboarding_C.png",
     },
     {
       "title": "Onboarding D",
-      "image": "assets/images/onboarding-d.png",
+      "image": "assets/images/onboarding_D.png",
     },
   ];
 }
