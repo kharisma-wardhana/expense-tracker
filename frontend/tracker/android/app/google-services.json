@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "476087796335",
+    "project_id": "trackerapp-680a0",
+    "storage_bucket": "trackerapp-680a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476087796335:android:5606c561ebc62fd10dc39a",
+        "android_client_info": {
+          "package_name": "com.kharis.tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476087796335-n6dc2kgpcjh2jsnp0n7n4e98mh3dn9pm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kharis.tracker",
+            "certificate_hash": "d0fe123e8f11f21e5d4a31d4be91291d3a8039b9"
+          }
+        },
+        {
+          "client_id": "476087796335-vn4iiv56e2f2gdmk667r38a4at699v1q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNdSLA2xqioSfFINj6i5WxoZeE3QFMXvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476087796335-vn4iiv56e2f2gdmk667r38a4at699v1q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
