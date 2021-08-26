@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,6 +22,9 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   bool _isSignInLoading = false;
+
+  CollectionReference _userCollection =
+      FirebaseFirestore.instance.collection('users');
 
   @override
   void initState() {
@@ -82,11 +86,17 @@ class _SignInPageState extends State<SignInPage> {
   void _signIn(Future<UserCredential> methodSignIn) async {
     String message = "";
     setState(() => _isSignInLoading = true);
-    await methodSignIn
-        .then((userCredential) => userCredential.user != null
-            ? Navigation.intentReplacement(HomeRoute)
-            : message = "User Not Found")
-        .catchError(
+    await methodSignIn.then((userCredential) {
+      if (userCredential.user != null) {
+        if (userCredential.user?.emailVerified != null) {
+          _userCollection.doc(userCredential.user?.uid).update({
+            "is_verified": userCredential.user?.emailVerified,
+          }).catchError((err) => message = "Error verified user email");
+        }
+        Navigation.intentReplacement(HomeRoute);
+      }
+      message = "User Not Found";
+    }).catchError(
       (err, stackTrace) {
         if (err.code == "user-not-found" || err.code == "wrong-password") {
           message = "Your Email Address or Password is invalid";

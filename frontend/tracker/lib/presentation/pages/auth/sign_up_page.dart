@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/style.dart';
@@ -22,7 +23,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _passwordController = new TextEditingController();
   bool _isSignUpLoading = false;
   String _errorMessage = "";
-
+  CollectionReference _userCollection =
+      FirebaseFirestore.instance.collection('users');
   @override
   void initState() {
     super.initState();
@@ -79,7 +81,21 @@ class _SignUpPageState extends State<SignUpPage> {
                 password: _passwordController.text,
               );
               userCredential.user?.sendEmailVerification();
-              Navigation.intentReplacement(HomeRoute);
+              if (userCredential.user != null) {
+                _userCollection
+                    .doc(userCredential.user?.uid)
+                    .set({
+                      "username": _usernameController.text,
+                      "fullname": _fullnameController.text,
+                      "email": _emailController.text,
+                      "is_verified": userCredential.user?.emailVerified,
+                      "balance": 0,
+                      "income": 0,
+                      "spend": 0,
+                    })
+                    .then((value) => Navigation.intentReplacement(HomeRoute))
+                    .catchError((error) => print(error.toString()));
+              }
             } on FirebaseAuthException catch (err) {
               message = err.message ?? err.code;
             } catch (err) {
