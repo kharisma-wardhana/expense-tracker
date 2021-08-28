@@ -5,6 +5,7 @@ import 'package:tracker/common/style.dart';
 import 'package:tracker/di/injector.dart';
 import 'package:tracker/domain/router/router.dart';
 import 'package:tracker/presentation/cubit/auth/auth_cubit.dart';
+import 'package:tracker/presentation/cubit/discover/discover_cubit.dart';
 import 'package:tracker/utils/navigation.dart';
 
 class App extends StatelessWidget {
@@ -18,6 +19,9 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider<AuthCubit>(
             create: (context) => injector<AuthCubit>(),
+          ),
+          BlocProvider<DiscoverCubit>(
+            create: (context) => injector<DiscoverCubit>(),
           ),
         ],
         child: MaterialApp(

@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracker/common/style.dart';
 import 'package:tracker/domain/router/router.dart';
+import 'package:tracker/presentation/cubit/auth/auth_cubit.dart';
 import 'package:tracker/presentation/pages/base_page.dart';
 import 'package:tracker/utils/navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,9 +66,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           children: [
                             Expanded(
-                              child: Text(
-                                _currentUser?.displayName ?? "Username",
-                                style: Theme.of(context).textTheme.headline6,
+                              child: BlocBuilder<AuthCubit, AuthState>(
+                                builder: (context, state) {
+                                  return Text(
+                                    state is AuthSuccess
+                                        ? state.user.username
+                                        : "Username",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  );
+                                },
                               ),
                             ),
                           ],

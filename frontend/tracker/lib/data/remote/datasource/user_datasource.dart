@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,14 +26,19 @@ class UserDatasourceImpl extends UserDatasource {
         password: password,
       );
       if (userCredential.user != null) {
+        final userData = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(userCredential.user?.uid)
+            .get();
+        print("Check UserData = $userData");
         UserEntity user = UserEntity(
-          fullname: userCredential.user!.displayName ?? "fullname",
-          username: userCredential.user!.displayName ?? "username",
-          email: userCredential.user!.email ?? "email",
+          fullname: userData["fullname"] ?? "fullname",
+          username: userData["username"] ?? "username",
+          email: userData["email"] ?? "email",
           balanceAmount: 0,
           incomeAmount: 0,
           expenseAmount: 0,
-          isVerified: userCredential.user!.emailVerified,
+          isVerified: userData["is_verified"],
         );
         return Right(user);
       }
