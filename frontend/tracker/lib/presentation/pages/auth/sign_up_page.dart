@@ -146,7 +146,7 @@ class _SignUpPageState extends State<SignUpPage> {
       contentBody: Expanded(
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               CustomTextField(
                   title: 'Fullname',

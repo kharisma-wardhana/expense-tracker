@@ -1,14 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tracker/common/style.dart';
 import 'package:tracker/domain/router/router.dart';
+import 'package:tracker/presentation/cubit/auth/auth_cubit.dart';
 import 'package:tracker/presentation/pages/auth/base_auth_page.dart';
 import 'package:tracker/presentation/widgets/custom_text_field.dart';
 import 'package:tracker/presentation/widgets/popup.dart';
 import 'package:tracker/utils/navigation.dart';
 import 'package:tracker/utils/validator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -22,9 +21,6 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   bool _isSignInLoading = false;
-
-  CollectionReference _userCollection =
-      FirebaseFirestore.instance.collection('users');
 
   @override
   void initState() {
@@ -83,53 +79,24 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void _signIn(Future<UserCredential> methodSignIn) async {
-    String message = "";
+  void _signIn({bool isGoogleSignIn = false}) async {
     setState(() => _isSignInLoading = true);
-    await methodSignIn.then((userCredential) {
-      if (userCredential.user != null) {
-        if (userCredential.user?.emailVerified != null) {
-          _userCollection.doc(userCredential.user?.uid).update({
-            "is_verified": userCredential.user?.emailVerified,
-          }).catchError((err) => message = "Error verified user email");
-        }
-        Navigation.intentReplacement(HomeRoute);
-      }
-      message = "User Not Found";
-    }).catchError(
-      (err, stackTrace) {
-        if (err.code == "user-not-found" || err.code == "wrong-password") {
-          message = "Your Email Address or Password is invalid";
-        }
-        PopUpDialog.showErrorSnackbar(context, message);
-      },
-    );
+    if (isGoogleSignIn) {
+      await context.read<AuthCubit>().googleSignIn();
+    } else {
+      await context.read<AuthCubit>().signIn(
+            _emailController.text,
+            _passwordController.text,
+          );
+    }
+    AuthState authState = context.read<AuthCubit>().state;
+    if (authState is AuthSuccess) {
+      Navigation.intentReplacement(HomeRoute);
+    }
+    if (authState is AuthFailed) {
+      PopUpDialog.showErrorSnackbar(context, authState.message);
+    }
     setState(() => _isSignInLoading = false);
-  }
-
-  Future<UserCredential> _signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
-  Future<UserCredential> _signInEmailAndPassword() async {
-    return await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
   }
 
   @override
@@ -184,16 +151,10 @@ class _SignInPageState extends State<SignInPage> {
               SizedBox(height: defaultSpacing),
               Spacer(),
               _buildButtonSignIn('Sign In', () {
-                if (_formKey.currentState!.validate())
-                  _signIn(_signInEmailAndPassword());
+                if (_formKey.currentState!.validate()) _signIn();
               }),
               SizedBox(height: defaultSpacing),
-              _buildButtonSignIn(
-                'Google',
-                () {
-                  _signIn(_signInWithGoogle());
-                },
-              ),
+              _buildButtonSignIn('Google', () => _signIn(isGoogleSignIn: true)),
               SizedBox(height: defaultSpacing),
               _buildBottomContent(),
             ],
