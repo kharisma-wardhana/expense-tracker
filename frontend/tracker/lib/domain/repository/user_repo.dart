@@ -8,4 +8,5 @@ abstract class UserRepo {
     String password,
   );
   Future<Either<AppError, UserEntity>> googleSignIn();
+  Future<Either<AppError, UserEntity>> signUp(UserEntity userData);
 }

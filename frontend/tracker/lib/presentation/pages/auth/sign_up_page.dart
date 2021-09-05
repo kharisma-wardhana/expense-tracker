@@ -1,12 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/common/style.dart';
+import 'package:tracker/domain/entity/user_entity.dart';
 import 'package:tracker/domain/router/router.dart';
+import 'package:tracker/presentation/cubit/auth/auth_cubit.dart';
 import 'package:tracker/presentation/pages/auth/base_auth_page.dart';
 import 'package:tracker/presentation/widgets/custom_text_field.dart';
 import 'package:tracker/utils/navigation.dart';
 import 'package:tracker/utils/validator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -22,12 +23,11 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   bool _isSignUpLoading = false;
-  String _errorMessage = "";
-  CollectionReference _userCollection =
-      FirebaseFirestore.instance.collection('users');
+
   @override
   void initState() {
     super.initState();
+    _isSignUpLoading = false;
   }
 
   @override
@@ -36,6 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _isSignUpLoading = false;
     super.dispose();
   }
 
@@ -62,51 +63,32 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  Future<void> _handleSignUp() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isSignUpLoading = true);
+      UserEntity userData = UserEntity(
+        fullname: _fullnameController.text,
+        email: _emailController.text,
+        username: _usernameController.text,
+        password: _passwordController.text,
+        imageURL: "",
+        isVerified: false,
+      );
+      await context.read<AuthCubit>().signUp(userData);
+      final AuthState authState = context.read<AuthCubit>().state;
+      setState(() => _isSignUpLoading = false);
+      if (authState is AuthSuccess) {
+        Navigation.intentReplacement(HomeRoute);
+      }
+    }
+  }
+
   Widget _buildButtonSignUp() {
     return Container(
       height: defaultPadding * 3,
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            String message = "";
-            setState(() {
-              _isSignUpLoading = true;
-              _errorMessage = message;
-            });
-            try {
-              UserCredential userCredential =
-                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                email: _emailController.text,
-                password: _passwordController.text,
-              );
-              userCredential.user?.sendEmailVerification();
-              if (userCredential.user != null) {
-                _userCollection
-                    .doc(userCredential.user?.uid)
-                    .set({
-                      "username": _usernameController.text,
-                      "fullname": _fullnameController.text,
-                      "email": _emailController.text,
-                      "is_verified": userCredential.user?.emailVerified,
-                      "balance": 0,
-                      "income": 0,
-                      "spend": 0,
-                    })
-                    .then((value) => Navigation.intentReplacement(HomeRoute))
-                    .catchError((error) => print(error.toString()));
-              }
-            } on FirebaseAuthException catch (err) {
-              message = err.message ?? err.code;
-            } catch (err) {
-              message = err.toString();
-            }
-            setState(() {
-              _errorMessage = message;
-              _isSignUpLoading = false;
-            });
-          }
-        },
+        onPressed: _handleSignUp,
         child: Text(
           'Sign Up',
           style: Theme.of(context).textTheme.button?.copyWith(
@@ -126,11 +108,18 @@ class _SignUpPageState extends State<SignUpPage> {
     return Row(
       children: [
         Expanded(
-          child: Text(
-            _errorMessage,
-            style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                  color: Colors.red,
-                ),
+          child: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              if (state is AuthFailed) {
+                return Text(
+                  state.message,
+                  style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                        color: Colors.red,
+                      ),
+                );
+              }
+              return SizedBox();
+            },
           ),
         ),
       ],
@@ -200,7 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   )),
               SizedBox(height: defaultSpacing),
-              _errorMessage.isEmpty ? SizedBox() : _buildErrorMessage(),
+              _buildErrorMessage(),
               SizedBox(height: defaultSpacing),
               Spacer(),
               _buildButtonSignUp(),

@@ -124,10 +124,7 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: BasePage(
-          body: Container(
-        padding: EdgeInsets.all(18.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: ListView(
           children: [
             Text(
               "Stats",
@@ -262,7 +259,7 @@ class _StatsPageState extends State<StatsPage> {
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }

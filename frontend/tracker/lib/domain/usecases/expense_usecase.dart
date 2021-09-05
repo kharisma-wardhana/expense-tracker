@@ -5,6 +5,10 @@ import 'package:tracker/domain/repository/expense_repo.dart';
 
 abstract class ExpenseUseCase {
   Future<Either<AppError, List<ExpenseEntity>>> getAllExpense();
+  Future<Either<AppError, List<ExpenseEntity>>> getRecentExpense();
+  Future<Either<AppError, List<ExpenseEntity>>> getCategoryExpense(
+    String category,
+  );
 }
 
 class ExpenseUseCaseImpl extends ExpenseUseCase {
@@ -14,5 +18,17 @@ class ExpenseUseCaseImpl extends ExpenseUseCase {
 
   Future<Either<AppError, List<ExpenseEntity>>> getAllExpense() async {
     return await expenseRepo.getAllExpense();
+  }
+
+  @override
+  Future<Either<AppError, List<ExpenseEntity>>> getCategoryExpense(
+    String category,
+  ) async {
+    return await expenseRepo.getCategoryExpense(category);
+  }
+
+  @override
+  Future<Either<AppError, List<ExpenseEntity>>> getRecentExpense() async {
+    return await expenseRepo.getRecentExpense();
   }
 }

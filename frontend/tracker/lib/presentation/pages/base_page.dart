@@ -25,7 +25,10 @@ class BasePage extends StatelessWidget {
                   ),
                 )
               : SizedBox(),
-          body,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: body,
+          ),
         ],
       ),
     );

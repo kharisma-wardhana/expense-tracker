@@ -6,6 +6,7 @@ import 'package:tracker/domain/repository/user_repo.dart';
 abstract class AuthUseCase {
   Future<Either<AppError, UserEntity>> signIn(String email, String password);
   Future<Either<AppError, UserEntity>> googleSignIn();
+  Future<Either<AppError, UserEntity>> signUp(UserEntity userData);
 }
 
 class AuthUseCaseImpl extends AuthUseCase {
@@ -23,4 +24,8 @@ class AuthUseCaseImpl extends AuthUseCase {
   @override
   Future<Either<AppError, UserEntity>> googleSignIn() async =>
       await userRepo.googleSignIn();
+
+  @override
+  Future<Either<AppError, UserEntity>> signUp(UserEntity userData) async =>
+      await userRepo.signUp(userData);
 }

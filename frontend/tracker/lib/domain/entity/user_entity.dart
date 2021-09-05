@@ -5,18 +5,22 @@ class UserEntity extends Equatable {
   final String username;
   final String email;
   final bool isVerified;
+  final String imageURL;
   final double balanceAmount;
   final double incomeAmount;
   final double expenseAmount;
+  final String password;
 
   UserEntity({
     required this.fullname,
     required this.username,
     required this.email,
     required this.isVerified,
-    required this.balanceAmount,
-    required this.incomeAmount,
-    required this.expenseAmount,
+    required this.imageURL,
+    this.balanceAmount = 0,
+    this.incomeAmount = 0,
+    this.expenseAmount = 0,
+    required this.password,
   });
 
   @override
@@ -28,5 +32,6 @@ class UserEntity extends Equatable {
         balanceAmount,
         incomeAmount,
         expenseAmount,
+        password,
       ];
 }

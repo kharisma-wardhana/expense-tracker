@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+part 'string_extension.dart';
 
 // Color
 final Color primaryColor = Color(0xFFF7F4F7);

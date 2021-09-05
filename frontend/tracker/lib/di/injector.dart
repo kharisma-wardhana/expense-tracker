@@ -9,6 +9,8 @@ import 'package:tracker/domain/repository/user_repo.dart';
 import 'package:tracker/domain/usecases/auth_usecase.dart';
 import 'package:tracker/domain/usecases/expense_usecase.dart';
 import 'package:tracker/presentation/cubit/auth/auth_cubit.dart';
+import 'package:tracker/presentation/cubit/category/category_cubit.dart';
+import 'package:tracker/presentation/cubit/cubit.dart';
 import 'package:tracker/presentation/cubit/discover/discover_cubit.dart';
 import 'package:tracker/utils/dio_helper.dart';
 
@@ -43,5 +45,13 @@ Future init() async {
   );
   injector.registerLazySingleton<DiscoverCubit>(
     () => DiscoverCubit(expenseUseCase: injector()),
+  );
+
+  injector.registerLazySingleton<CategoryCubit>(
+    () => CategoryCubit(expenseUseCase: injector()),
+  );
+
+  injector.registerLazySingleton<ThemeCubit>(
+    () => ThemeCubit(),
   );
 }

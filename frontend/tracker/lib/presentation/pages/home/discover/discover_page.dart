@@ -142,55 +142,66 @@ class _DiscoverPageState extends State<DiscoverPage> {
   }
 
   Widget _buildCardHistory(ExpenseEntity expense) {
-    return Container(
-      padding: EdgeInsets.only(top: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/image/splash.png"),
-                  fit: BoxFit.contain),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(
-                      "${expense.name}",
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      "${expense.category}",
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      "${expense.date}",
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
-                ],
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      shadowColor: primaryColor,
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              child: Icon(
+                Icons.account_balance_wallet,
+                color: Colors.blue,
+                size: 32,
               ),
             ),
-          ),
-          Container(
-            child: Text(
-              "${expense.price}",
-              style: Theme.of(context).textTheme.subtitle1,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(
+                        "${expense.name}",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "${expense.category}",
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                              color: darkSecondaryColor,
+                            ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "${expense.date}",
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+            Container(
+              child: Text(
+                "${expense.price}".toCurrencies(),
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: Colors.purple,
+                    ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -200,26 +211,22 @@ class _DiscoverPageState extends State<DiscoverPage> {
     injector<DiscoverCubit>().getAllExpense();
     return BasePage(
       body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.only(bottom: 48),
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              SizedBox(height: 10),
-              _buildCard(),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Today",
-                  style: Theme.of(context).textTheme.headline6,
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(),
+            SizedBox(height: 10),
+            _buildCard(),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Today",
+                style: Theme.of(context).textTheme.headline6,
               ),
-              _buildRecentHistory(),
-            ],
-          ),
+            ),
+            _buildRecentHistory(),
+          ],
         ),
       ),
     );

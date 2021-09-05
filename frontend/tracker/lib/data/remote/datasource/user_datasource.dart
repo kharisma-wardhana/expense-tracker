@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tracker/data/error/app_error.dart';
+import 'package:tracker/data/remote/model/user_model.dart';
 import 'package:tracker/domain/entity/user_entity.dart';
 
 abstract class UserDatasource {
@@ -11,9 +12,21 @@ abstract class UserDatasource {
     String password,
   );
   Future<Either<AppError, UserEntity>> googleSignIn();
+  Future<Either<AppError, UserEntity>> signUp(UserModel userData);
 }
 
 class UserDatasourceImpl extends UserDatasource {
+  final CollectionReference userRef =
+      FirebaseFirestore.instance.collection("users");
+
+  Future<DocumentSnapshot> getUserData(String? uid) async {
+    return await userRef.doc(uid).get();
+  }
+
+  Future<void> saveUserData(String? uid, UserModel userModel) async {
+    await userRef.doc(uid).set(userModel.toJSON());
+  }
+
   @override
   Future<Either<AppError, UserEntity>> firebaseSignIn(
     String email,
@@ -26,25 +39,19 @@ class UserDatasourceImpl extends UserDatasource {
         password: password,
       );
       if (userCredential.user != null) {
-        final userData = await FirebaseFirestore.instance
-            .collection("users")
-            .doc(userCredential.user?.uid)
-            .get();
-        print("Check UserData = $userData");
-        UserEntity user = UserEntity(
-          fullname: userData["fullname"] ?? "fullname",
-          username: userData["username"] ?? "username",
-          email: userData["email"] ?? "email",
-          balanceAmount: 0,
-          incomeAmount: 0,
-          expenseAmount: 0,
-          isVerified: userData["is_verified"],
-        );
-        return Right(user);
+        DocumentSnapshot userData = await getUserData(userCredential.user?.uid);
+        if (userData.exists) {
+          Map<String, dynamic> jsonData =
+              userData.data() as Map<String, dynamic>;
+          UserEntity user = UserModel.fromJSON(jsonData);
+          return Right(user);
+        }
       }
       return Left(AppError(message: "User Not Found"));
     } on FirebaseAuthException catch (err) {
       return Left(AppError(message: err.message ?? "FirebaseAuth Exception"));
+    } catch (err) {
+      return Left(AppError(message: err.toString()));
     }
   }
 
@@ -69,20 +76,50 @@ class UserDatasourceImpl extends UserDatasource {
           await FirebaseAuth.instance.signInWithCredential(credential);
 
       if (userCredential.user != null) {
-        UserEntity user = UserEntity(
-          fullname: userCredential.user!.displayName!,
-          username: userCredential.user!.displayName!,
-          email: userCredential.user!.email!,
-          balanceAmount: 0,
-          incomeAmount: 0,
-          expenseAmount: 0,
-          isVerified: userCredential.user!.emailVerified,
-        );
-        return Right(user);
+        DocumentSnapshot userData = await getUserData(userCredential.user?.uid);
+        if (userData.exists) {
+          Map<String, dynamic> jsonData =
+              userData.data() as Map<String, dynamic>;
+          UserEntity user = UserModel.fromJSON(jsonData);
+          return Right(user);
+        } else {
+          UserModel userModel = UserModel(
+            fullname: userCredential.user?.displayName ?? "",
+            username: userCredential.user?.displayName ?? "",
+            email: userCredential.user?.email ?? "",
+            isVerified: userCredential.user?.emailVerified ?? false,
+            imageURL: userCredential.user?.photoURL ?? "",
+          );
+          await saveUserData(userCredential.user?.uid, userModel);
+          return Right(userModel);
+        }
       }
       return Left(AppError(message: "User Not Found"));
     } on FirebaseAuthException catch (err) {
       return Left(AppError(message: err.message ?? "Google Exception"));
+    } catch (err) {
+      return Left(AppError(message: err.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AppError, UserEntity>> signUp(UserModel userModel) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: userModel.email,
+        password: userModel.password,
+      );
+      if (userCredential.user != null) {
+        userCredential.user?.sendEmailVerification();
+        await saveUserData(userCredential.user?.uid, userModel);
+        return Right(userModel);
+      }
+      return Left(AppError(message: "SignUp Exception"));
+    } on FirebaseAuthException catch (err) {
+      return Left(AppError(message: err.message ?? "SignUp Exception"));
+    } catch (err) {
+      return Left(AppError(message: err.toString()));
     }
   }
 }

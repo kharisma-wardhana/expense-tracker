@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/style.dart';
+import 'package:tracker/di/injector.dart';
+import 'package:tracker/domain/router/router.dart';
+import 'package:tracker/presentation/cubit/category/category_cubit.dart';
 import 'package:tracker/presentation/pages/base_page.dart';
 import 'package:tracker/presentation/pages/home/budget/budget_page.dart';
 import 'package:tracker/presentation/pages/home/discover/discover_page.dart';
 import 'package:tracker/presentation/pages/home/profile/profile_page.dart';
 import 'package:tracker/presentation/pages/home/stats/stats_page.dart';
+import 'package:tracker/utils/navigation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -100,30 +104,42 @@ class _HomePageState extends State<HomePage> {
         children: [
           PageView(
             controller: _pageController,
-            onPageChanged: (val) {
+            onPageChanged: (val) async {
               setState(() {
                 _currentPage = val;
               });
+              if (val == 1) {
+                await injector<CategoryCubit>().getCategoryExpense(
+                  "Entertainment",
+                );
+              }
             },
             children: _contentBody,
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: _buildBottomNav(),
           ),
           Positioned(
-            right: MediaQuery.of(context).size.width * 0.4,
-            bottom: 32,
-            child: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: darkSecondaryColor,
-                borderRadius: BorderRadius.circular(80),
-              ),
-              child: Icon(
-                Icons.add_circle,
-                color: whiteColor,
+            right: MediaQuery.of(context).size.width * 0.38,
+            bottom: 40,
+            child: GestureDetector(
+              onTap: () {
+                Navigation.intent(AddBudgetRoute);
+              },
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: darkSecondaryColor,
+                  borderRadius: BorderRadius.circular(80),
+                ),
+                child: Icon(
+                  Icons.add_circle,
+                  color: whiteColor,
+                ),
               ),
             ),
           ),

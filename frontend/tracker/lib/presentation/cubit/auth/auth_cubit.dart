@@ -30,7 +30,14 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  void signUp() {}
+  Future<void> signUp(UserEntity userData) async {
+    final Either<AppError, UserEntity> eitherResponse =
+        await authUseCase.signUp(userData);
+    return eitherResponse.fold(
+      (err) => emit(AuthFailed(message: err.message)),
+      (data) => emit(AuthSuccess(user: data)),
+    );
+  }
 
   void forgotPassword() {}
 }

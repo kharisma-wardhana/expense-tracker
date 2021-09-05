@@ -27,4 +27,45 @@ class ExpenseRepoImpl extends ExpenseRepo {
       },
     );
   }
+
+  @override
+  Future<Either<AppError, List<ExpenseEntity>>> getCategoryExpense(
+    String category,
+  ) async {
+    final eitherResponse =
+        await expenseDatasource.getExpenseByCategory(category);
+    return eitherResponse.fold(
+      (err) => Left(err),
+      (data) {
+        List<ExpenseEntity> expense = data
+            .map((e) => ExpenseEntity(
+                  name: e.name,
+                  category: e.category,
+                  price: e.price,
+                  date: e.date,
+                ))
+            .toList();
+        return Right(expense);
+      },
+    );
+  }
+
+  @override
+  Future<Either<AppError, List<ExpenseEntity>>> getRecentExpense() async {
+    final eitherResponse = await expenseDatasource.getRecentExpense();
+    return eitherResponse.fold(
+      (err) => Left(err),
+      (data) {
+        List<ExpenseEntity> expense = data
+            .map((e) => ExpenseEntity(
+                  name: e.name,
+                  category: e.category,
+                  price: e.price,
+                  date: e.date,
+                ))
+            .toList();
+        return Right(expense);
+      },
+    );
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker/domain/router/router.dart';
 import 'package:tracker/presentation/pages/base_page.dart';
 import 'package:tracker/utils/navigation.dart';
@@ -36,11 +37,16 @@ class _SplashPageState extends State<SplashPage> {
     return Timer(_splashTime, _handleSplash);
   }
 
-  void _handleSplash() {
+  void _handleSplash() async {
     User? user = FirebaseAuth.instance.currentUser;
-    String nextRoute = SignInRoute;
-    if (user != null) {
-      nextRoute = HomeRoute;
+    String nextRoute = HomeRoute;
+    var _pref = await SharedPreferences.getInstance();
+    bool? isFirstLaunch = _pref.getBool("firstLaunch");
+
+    if (isFirstLaunch == null || isFirstLaunch == false) {
+      nextRoute = OnboardingRoute;
+    } else if (user == null) {
+      nextRoute = SignInRoute;
     }
     Navigation.intentReplacement(nextRoute);
   }
