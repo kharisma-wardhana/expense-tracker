@@ -14,6 +14,9 @@ abstract class ExpenseDatasource {
     String category,
   );
   Future<Either<AppError, List<ExpenseModel>>> getRecentExpense();
+  Future<Either<AppError, List<ExpenseModel>>> addBudgetExpense(
+    ExpenseModel expense,
+  );
 }
 
 class ExpenseDatasourceImpl extends ExpenseDatasource {
@@ -27,7 +30,7 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
     return (response.data["results"] as List)
         .map((e) => ExpenseModel.fromJSON(e["properties"]))
         .toList()
-          ..sort((a, b) => b.date.compareTo(a.date));
+      ..sort((a, b) => b.date.compareTo(a.date));
   }
 
   @override
@@ -42,9 +45,7 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
         AppError(message: response.statusMessage ?? "Unexpected Error API"),
       );
     } catch (err) {
-      return Left(
-        AppError(message: "Unexpected Error"),
-      );
+      return Left(AppError(message: "Unexpected Error"));
     }
   }
 
@@ -71,9 +72,7 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
         AppError(message: response.statusMessage ?? "Unexpected Error API"),
       );
     } catch (err) {
-      return Left(
-        AppError(message: "Unexpected Error"),
-      );
+      return Left(AppError(message: "Unexpected Error"));
     }
   }
 
@@ -90,9 +89,24 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
         AppError(message: response.statusMessage ?? "Unexpected Error API"),
       );
     } catch (err) {
+      return Left(AppError(message: "Unexpected Error"));
+    }
+  }
+
+  @override
+  Future<Either<AppError, List<ExpenseModel>>> addBudgetExpense(
+    ExpenseModel expense,
+  ) async {
+    try {
+      final response = await client.dio.post(path, data: expense.toJON());
+      if (response.statusCode == HttpStatus.ok) {
+        return Right(getListExpense(response));
+      }
       return Left(
-        AppError(message: "Unexpected Error"),
+        AppError(message: response.statusMessage ?? "Unexpected Error API"),
       );
+    } catch (err) {
+      return Left(AppError(message: "Unexpected Error"));
     }
   }
 }

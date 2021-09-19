@@ -75,7 +75,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -96,7 +96,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -131,7 +131,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             return Center(child: Text("Empty data"));
           } else if (state is DiscoverHasData) {
             return ListView.builder(
-              itemCount: state.allExpense.length,
+              itemCount: 4,
               itemBuilder: (_, id) => _buildCardHistory(state.allExpense[id]),
             );
           }
@@ -215,9 +215,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _buildCard(),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -226,6 +226,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
               ),
             ),
             _buildRecentHistory(),
+            const SizedBox(height: 60),
           ],
         ),
       ),

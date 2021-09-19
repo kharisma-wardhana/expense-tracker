@@ -16,13 +16,18 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool _isDarkTheme = false;
-  bool _isReminderActive = false;
   bool _isSignOutLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _isSignOutLoading = false;
+  }
+
+  @override
+  void dispose() {
+    _isSignOutLoading = false;
+    super.dispose();
   }
 
   void _handleSignOut() async {
@@ -45,11 +50,16 @@ class _ProfilePageState extends State<ProfilePage> {
           builder: (context, state) {
             String _profilePictureURL =
                 state is AuthSuccess ? state.user.imageURL : "";
-            return CircleAvatar(
-              radius: 40,
-              backgroundImage: _profilePictureURL.isEmpty
-                  ? Image.asset("assets/image/splash.png").image
-                  : NetworkImage(_profilePictureURL),
+            return GestureDetector(
+              onTap: () {
+                Navigation.intent(EditProfileRoute);
+              },
+              child: CircleAvatar(
+                radius: 40,
+                backgroundImage: _profilePictureURL.isEmpty
+                    ? Image.asset("assets/image/splash.png").image
+                    : NetworkImage(_profilePictureURL),
+              ),
             );
           },
         ),
@@ -118,6 +128,16 @@ class _ProfilePageState extends State<ProfilePage> {
           onTap: _handleSignOut,
         ),
         ListTile(
+          leading: Icon(Icons.settings),
+          onTap: () {
+            Navigation.intent(SettingsRoute);
+          },
+          title: Text(
+            "Settings",
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+        ),
+        ListTile(
           leading: Icon(Icons.info),
           onTap: () {
             showAboutDialog(
@@ -129,30 +149,6 @@ class _ProfilePageState extends State<ProfilePage> {
             "About",
             style: Theme.of(context).textTheme.bodyText2,
           ),
-        ),
-        Divider(),
-        Text(
-          "Settings",
-          style: Theme.of(context).textTheme.subtitle1,
-        ),
-        SwitchListTile(
-          title: Text(
-            "Dark Theme",
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-          value: _isDarkTheme,
-          onChanged: (val) async {
-            await context.read<ThemeCubit>().changeTheme(isDarkTheme: val);
-            setState(() => _isDarkTheme = val);
-          },
-        ),
-        SwitchListTile(
-          title: Text(
-            "Reminder",
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-          value: _isReminderActive,
-          onChanged: (val) => setState(() => _isReminderActive = val),
         ),
       ],
     );
@@ -170,10 +166,10 @@ class _ProfilePageState extends State<ProfilePage> {
               "Profile",
               style: Theme.of(context).textTheme.headline4,
             ),
-            Divider(),
+            const Divider(),
             SizedBox(height: defaultPadding),
             _buildHeader(),
-            Divider(),
+            const Divider(),
             SizedBox(height: defaultPadding),
             Expanded(
               child: _buildMenu(),

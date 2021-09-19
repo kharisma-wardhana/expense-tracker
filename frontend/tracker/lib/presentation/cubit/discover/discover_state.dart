@@ -1,8 +1,11 @@
 part of 'discover_cubit.dart';
 
-class DiscoverState extends Equatable {
+abstract class DiscoverState extends Equatable {
   @override
   List<Object?> get props => [];
+
+  @override
+  bool get stringify => true;
 }
 
 class DiscoverInit extends DiscoverState {}

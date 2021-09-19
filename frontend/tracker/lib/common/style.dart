@@ -5,12 +5,12 @@ import 'package:intl/intl.dart';
 part 'string_extension.dart';
 
 // Color
-final Color primaryColor = Color(0xFFF7F4F7);
-final Color secondaryColor = Color(0xFF42224A);
-final Color darkPrimaryColor = Color(0xFF120216);
-final Color darkSecondaryColor = Color(0xFF6B38FB);
-final Color greyColor = Color(0xFF898989);
-final Color whiteColor = Color(0xFFE5E5E5);
+const Color primaryColor = Color(0xFFF7F4F7);
+const Color secondaryColor = Color(0xFF42224A);
+const Color darkPrimaryColor = Color(0xFF120216);
+const Color darkSecondaryColor = Color(0xFF6B38FB);
+const Color greyColor = Color(0xFF898989);
+const Color whiteColor = Color(0xFFE5E5E5);
 
 // Text Theme
 final TextTheme myTextTheme = TextTheme(
@@ -70,20 +70,28 @@ final TextTheme myTextTheme = TextTheme(
 );
 
 // Size
-final double defaultMargin = 32.0;
-final double defaultPadding = 18.0;
-final double defaultSpacing = 8.0;
-final double defaultBorderRadius = 16.0;
+const double defaultMargin = 32.0;
+const double defaultPadding = 18.0;
+const double defaultSpacing = 8.0;
+const double defaultBorderRadius = 16.0;
 
 ThemeData lightTheme = ThemeData(
   primaryColor: darkSecondaryColor,
-  accentColor: secondaryColor,
   scaffoldBackgroundColor: Colors.white,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   textTheme: myTextTheme,
   appBarTheme: AppBarTheme(
-    textTheme: myTextTheme.apply(bodyColor: darkPrimaryColor),
     elevation: 0,
+  ),
+  chipTheme: ChipThemeData(
+    backgroundColor: secondaryColor,
+    disabledColor: greyColor,
+    selectedColor: secondaryColor,
+    secondarySelectedColor: darkSecondaryColor,
+    padding: const EdgeInsets.all(defaultSpacing),
+    labelStyle: TextStyle(),
+    secondaryLabelStyle: TextStyle(),
+    brightness: Brightness.dark,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     selectedItemColor: secondaryColor,
@@ -103,13 +111,21 @@ ThemeData lightTheme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
-  primaryColor: darkPrimaryColor,
-  accentColor: darkSecondaryColor,
+  primaryColor: secondaryColor,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   textTheme: myTextTheme,
   appBarTheme: AppBarTheme(
-    textTheme: myTextTheme.apply(bodyColor: Colors.white),
     elevation: 0,
+  ),
+  chipTheme: ChipThemeData(
+    backgroundColor: darkSecondaryColor,
+    disabledColor: greyColor,
+    selectedColor: primaryColor,
+    secondarySelectedColor: darkSecondaryColor,
+    padding: const EdgeInsets.all(defaultSpacing),
+    labelStyle: TextStyle(),
+    secondaryLabelStyle: TextStyle(),
+    brightness: Brightness.dark,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     selectedItemColor: darkSecondaryColor,
@@ -117,7 +133,7 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      primary: secondaryColor,
+      primary: darkSecondaryColor,
       textStyle: TextStyle(
         color: primaryColor,
       ),

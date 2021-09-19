@@ -9,6 +9,9 @@ abstract class ExpenseUseCase {
   Future<Either<AppError, List<ExpenseEntity>>> getCategoryExpense(
     String category,
   );
+  Future<Either<AppError, List<ExpenseEntity>>> addExpense(
+    ExpenseEntity expense,
+  );
 }
 
 class ExpenseUseCaseImpl extends ExpenseUseCase {
@@ -30,5 +33,12 @@ class ExpenseUseCaseImpl extends ExpenseUseCase {
   @override
   Future<Either<AppError, List<ExpenseEntity>>> getRecentExpense() async {
     return await expenseRepo.getRecentExpense();
+  }
+
+  @override
+  Future<Either<AppError, List<ExpenseEntity>>> addExpense(
+    ExpenseEntity expense,
+  ) async {
+    return await expenseRepo.addBudgetExpense(expense);
   }
 }

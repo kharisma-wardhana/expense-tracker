@@ -152,17 +152,11 @@ class _BudgetPageState extends State<BudgetPage> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 32,
-            ),
-            Text("Category"),
-            SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 32),
+            const Text("Category"),
+            const SizedBox(height: 10),
             _buildCategoryList(),
-            SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             _buildCategoryExpense()
           ],
         ),

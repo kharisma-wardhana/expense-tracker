@@ -11,6 +11,9 @@ class PopUpDialog {
   factory PopUpDialog() => _instance ?? PopUpDialog._internal();
 
   static void showErrorSnackbar(BuildContext context, String message) {
+    if (_instance == null) {
+      _instance = PopUpDialog();
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       _instance!._snackBarContent(
         bgColor: Colors.red,
@@ -21,6 +24,9 @@ class PopUpDialog {
   }
 
   static void showInfoSnackbar(BuildContext context, String message) {
+    if (_instance == null) {
+      _instance = PopUpDialog();
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       _instance!._snackBarContent(
         bgColor: Colors.white,

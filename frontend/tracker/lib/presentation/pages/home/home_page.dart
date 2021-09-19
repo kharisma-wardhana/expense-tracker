@@ -21,16 +21,21 @@ class _HomePageState extends State<HomePage> {
   PageController _pageController = new PageController(initialPage: 0);
   int _currentPage = 0;
 
-  List<Widget> _contentBody = [
+  static const List<Widget> _contentBody = [
     DiscoverPage(),
     BudgetPage(),
     StatsPage(),
     ProfilePage(),
   ];
 
-  List<String> _menuName = ["Discover", "Budget", "Stats", "Profile"];
+  static const List<String> _menuName = [
+    "Discover",
+    "Budget",
+    "Stats",
+    "Profile"
+  ];
 
-  List<IconData> _iconList = [
+  static const List<IconData> _iconList = [
     Icons.dashboard,
     Icons.account_balance_wallet,
     Icons.assessment,

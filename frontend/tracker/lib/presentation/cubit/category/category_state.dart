@@ -1,8 +1,11 @@
 part of 'category_cubit.dart';
 
-class CategoryState extends Equatable {
+abstract class CategoryState extends Equatable {
   @override
   List<Object?> get props => [];
+
+  @override
+  bool get stringify => true;
 }
 
 class CategoryInit extends CategoryState {

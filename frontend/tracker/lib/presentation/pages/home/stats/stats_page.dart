@@ -14,7 +14,7 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   int _selectedMonth = 0;
-  List<String> _monthName = [
+  static const List<String> _monthName = [
     "Jan",
     "Feb",
     "Mar",
@@ -28,7 +28,7 @@ class _StatsPageState extends State<StatsPage> {
     "Nov",
     "Dec",
   ];
-  List<Color> _gradientColors = [
+  static const List<Color> _gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
   ];
@@ -130,9 +130,7 @@ class _StatsPageState extends State<StatsPage> {
               "Stats",
               style: Theme.of(context).textTheme.headline4,
             ),
-            SizedBox(
-              height: 18,
-            ),
+            const SizedBox(height: 18),
             Container(
               height: 32,
               child: ListView(
@@ -147,9 +145,7 @@ class _StatsPageState extends State<StatsPage> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 8,
-            ),
+            const SizedBox(height: 8),
             Container(
               height: 32,
               child: ListView(
@@ -172,7 +168,7 @@ class _StatsPageState extends State<StatsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 18),
+            const SizedBox(height: 18),
             Container(
               height: 350,
               padding: EdgeInsets.all(18.0),
@@ -195,9 +191,7 @@ class _StatsPageState extends State<StatsPage> {
                           color: whiteColor,
                         ),
                   ),
-                  SizedBox(
-                    height: 18,
-                  ),
+                  const SizedBox(height: 18),
                   Container(
                     height: 220,
                     child: LineChart(_chartData()),
@@ -205,7 +199,7 @@ class _StatsPageState extends State<StatsPage> {
                 ],
               ),
             ),
-            SizedBox(height: 18),
+            const SizedBox(height: 18),
             Expanded(
               child: Row(
                 children: [
@@ -214,7 +208,7 @@ class _StatsPageState extends State<StatsPage> {
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.remove_circle,
                           ),
                           Text(
@@ -231,13 +225,13 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.add_circle,
                           ),
                           Text(

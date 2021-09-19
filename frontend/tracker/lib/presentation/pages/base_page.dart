@@ -3,11 +3,13 @@ import 'package:tracker/common/style.dart';
 
 class BasePage extends StatelessWidget {
   final Widget body;
+  final AppBar? appBar;
   final bool isLoading;
 
   const BasePage({
     Key? key,
     required this.body,
+    this.appBar,
     this.isLoading = false,
   }) : super(key: key);
 
@@ -16,6 +18,7 @@ class BasePage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: primaryColor,
+      appBar: appBar,
       body: Stack(
         children: [
           isLoading

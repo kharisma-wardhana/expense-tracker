@@ -8,4 +8,7 @@ abstract class ExpenseRepo {
   Future<Either<AppError, List<ExpenseEntity>>> getCategoryExpense(
     String category,
   );
+  Future<Either<AppError, List<ExpenseEntity>>> addBudgetExpense(
+    ExpenseEntity expense,
+  );
 }
