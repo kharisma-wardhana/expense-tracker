@@ -10,7 +10,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> changeTheme({bool isDarkTheme = false}) async {
     emit(ThemeLoading());
-    print("CHECKED CHANGE THEME IS DARK = $isDarkTheme");
+    print('CHECKED CHANGE THEME IS DARK = $isDarkTheme');
     ThemeData themeData = isDarkTheme ? darkTheme : lightTheme;
     return emit(ThemeHasData(themeData: themeData));
   }

@@ -9,15 +9,15 @@ import 'package:tracker/presentation/pages/home/settings/settings_page.dart';
 import 'package:tracker/presentation/pages/onboarding/onboarding_page.dart';
 import 'package:tracker/presentation/pages/splash/splash_page.dart';
 
-const String SplashRoute = "/splash";
-const String OnboardingRoute = "/onboarding";
-const String HomeRoute = "/home";
-const String SignInRoute = "/signin";
-const String SignUpRoute = "/signup";
-const String ForgotPasswordRoute = "/forgot_password";
-const String EditProfileRoute = "/edit_profile";
-const String AddBudgetRoute = "/add_budget";
-const String SettingsRoute = "/setting";
+const String SplashRoute = '/splash';
+const String OnboardingRoute = '/onboarding';
+const String HomeRoute = '/home';
+const String SignInRoute = '/signin';
+const String SignUpRoute = '/signup';
+const String ForgotPasswordRoute = '/forgot_password';
+const String EditProfileRoute = '/edit_profile';
+const String AddBudgetRoute = '/add_budget';
+const String SettingsRoute = '/setting';
 
 Map<String, WidgetBuilder> listRoute = {
   SplashRoute: (context) => SplashPage(),

@@ -14,7 +14,7 @@ class DiscoverCubit extends Cubit<DiscoverState> {
     final eitherResponse = await expenseUseCase.getAllExpense();
     return eitherResponse.fold(
       (err) => emit(DiscoverFailed(message: err.message)),
-      (data) => data.length > 0
+      (data) => data.isNotEmpty
           ? emit(DiscoverHasData(allExpense: data))
           : emit(DiscoverNoData()),
     );

@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  PageController _pageController = new PageController(initialPage: 0);
+  PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
   static const List<Widget> _contentBody = [
@@ -29,10 +29,10 @@ class _HomePageState extends State<HomePage> {
   ];
 
   static const List<String> _menuName = [
-    "Discover",
-    "Budget",
-    "Stats",
-    "Profile"
+    'Discover',
+    'Budget',
+    'Stats',
+    'Profile'
   ];
 
   static const List<IconData> _iconList = [
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   @override
   initState() {
     super.initState();
-    _pageController = new PageController(initialPage: 0);
+    _pageController = PageController(initialPage: 0);
   }
 
   Widget _buildBottomNav() {
@@ -110,12 +110,10 @@ class _HomePageState extends State<HomePage> {
           PageView(
             controller: _pageController,
             onPageChanged: (val) async {
-              setState(() {
-                _currentPage = val;
-              });
+              setState(() => _currentPage = val);
               if (val == 1) {
                 await injector<CategoryCubit>().getCategoryExpense(
-                  "Entertainment",
+                  'Entertainment',
                 );
               }
             },

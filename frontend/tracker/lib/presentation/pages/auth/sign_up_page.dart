@@ -18,10 +18,10 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _fullnameController = new TextEditingController();
-  TextEditingController _usernameController = new TextEditingController();
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _isSignUpLoading = false;
 
   @override
@@ -55,7 +55,10 @@ class _SignUpPageState extends State<SignUpPage> {
             },
             child: Text(
               'Sign In',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    color: darkSecondaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           ),
         ],
@@ -71,7 +74,7 @@ class _SignUpPageState extends State<SignUpPage> {
         email: _emailController.text,
         username: _usernameController.text,
         password: _passwordController.text,
-        imageURL: "",
+        imageURL: '',
         isVerified: false,
       );
       await context.read<AuthCubit>().signUp(userData);
@@ -129,8 +132,8 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return BaseAuthPage(
-      title: "Sign Up",
-      subtitle: "Register and Plan Your Dream",
+      title: 'Sign Up',
+      subtitle: 'Register and Plan Your Dream',
       isLoading: _isSignUpLoading,
       contentBody: Expanded(
         child: Form(

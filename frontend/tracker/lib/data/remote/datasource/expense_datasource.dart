@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tracker/common/constants.dart';
 import 'package:tracker/data/error/app_error.dart';
 import 'package:tracker/data/remote/model/expense_model.dart';
+import 'package:tracker/data/remote/model/request_new_data.dart';
 import 'package:tracker/utils/dio_helper.dart';
 
 abstract class ExpenseDatasource {
@@ -27,8 +28,8 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
   ExpenseDatasourceImpl({required this.client});
 
   List<ExpenseModel> getListExpense(response) {
-    return (response.data["results"] as List)
-        .map((e) => ExpenseModel.fromJSON(e["properties"]))
+    return (response.data['results'] as List)
+        .map((e) => ExpenseModel.fromJSON(e['properties']))
         .toList()
       ..sort((a, b) => b.date.compareTo(a.date));
   }
@@ -42,10 +43,10 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
       }
 
       return Left(
-        AppError(message: response.statusMessage ?? "Unexpected Error API"),
+        AppError(message: response.statusMessage ?? 'Unexpected Error API'),
       );
     } catch (err) {
-      return Left(AppError(message: "Unexpected Error"));
+      return Left(AppError(message: 'Unexpected Error'));
     }
   }
 
@@ -55,9 +56,9 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
   ) async {
     try {
       Map<String, dynamic> filterData = {
-        "filter": {
-          "property": "Category",
-          "select": {"equals": "$category"}
+        'filter': {
+          'property': 'Category',
+          'select': {'equals': '$category'}
         }
       };
       final response = await client.dio.post(
@@ -69,27 +70,27 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
       }
 
       return Left(
-        AppError(message: response.statusMessage ?? "Unexpected Error API"),
+        AppError(message: response.statusMessage ?? 'Unexpected Error API'),
       );
     } catch (err) {
-      return Left(AppError(message: "Unexpected Error"));
+      return Left(AppError(message: 'Unexpected Error $err'));
     }
   }
 
   @override
   Future<Either<AppError, List<ExpenseModel>>> getRecentExpense() async {
     try {
-      Map<String, dynamic> pageSize = {"page_size": 5};
+      Map<String, dynamic> pageSize = {'page_size': 5};
       final response = await client.dio.post(path, data: jsonEncode(pageSize));
       if (response.statusCode == HttpStatus.ok) {
         return Right(getListExpense(response));
       }
 
       return Left(
-        AppError(message: response.statusMessage ?? "Unexpected Error API"),
+        AppError(message: response.statusMessage ?? 'Unexpected Error API'),
       );
     } catch (err) {
-      return Left(AppError(message: "Unexpected Error"));
+      return Left(AppError(message: 'Unexpected Error'));
     }
   }
 
@@ -98,15 +99,32 @@ class ExpenseDatasourceImpl extends ExpenseDatasource {
     ExpenseModel expense,
   ) async {
     try {
-      final response = await client.dio.post(path, data: expense.toJON());
-      if (response.statusCode == HttpStatus.ok) {
-        return Right(getListExpense(response));
-      }
+      // Parent parent = Parent(databaseId: databaseId);
+      // Properties properties = Properties(
+      //   name: expense.name,
+      //   category: expense.category,
+      // );
+      // RichText text = RichText(
+      //   plainText: expense.name,
+      // );
+      // Name name = Name(title: text);
+      // Select select = Select(
+      //   name: name,
+      // );
+      // Category(select: select);
+      // RequestNewData requestData = RequestNewData(
+      //   parent: parent,
+      //   properties: properties,
+      // );
+      // final response = await client.dio.post(path, data: requestData.toJson());
+      // if (response.statusCode == HttpStatus.ok) {
+      //   return Right(getListExpense(response));
+      // }
       return Left(
-        AppError(message: response.statusMessage ?? "Unexpected Error API"),
+        AppError(message: 'Unexpected Error API'),
       );
     } catch (err) {
-      return Left(AppError(message: "Unexpected Error"));
+      return Left(AppError(message: 'Unexpected Error'));
     }
   }
 }

@@ -13,9 +13,9 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  bool _isForgotPassLoading = false;
-  bool _isResetSuccess = false;
-  TextEditingController _emailController = new TextEditingController();
+  final bool _isForgotPassLoading = false;
+  final bool _isResetSuccess = false;
+  final TextEditingController _emailController = TextEditingController();
 
   Widget _buildResetButton() {
     return Container(
@@ -29,7 +29,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
         onPressed: () {},
         child: Text(
-          "Reset Password",
+          'Reset Password',
           style: Theme.of(context).textTheme.button?.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -46,12 +46,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           Container(
             width: defaultMargin,
             height: defaultMargin,
-            child: Image.asset("assets/icon/icon_email.png"),
+            child: Image.asset('assets/icon/icon_email.png'),
           ),
           SizedBox(height: defaultMargin),
           Row(
             children: [
-              Text("Please check your email to reset password"),
+              Text('Please check your email to reset password'),
             ],
           ),
           SizedBox(height: defaultSpacing),
@@ -60,10 +60,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             height: defaultPadding * 3,
             child: ElevatedButton(
               onPressed: () {
-                _emailController.text = "";
+                _emailController.text = '';
                 Navigation.back();
               },
-              child: Text("OK"),
+              child: Text('OK'),
             ),
           ),
         ],
@@ -74,7 +74,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return BaseAuthPage(
-        title: "Forgot Password",
+        title: 'Forgot Password',
         isLoading: _isForgotPassLoading,
         contentBody: Expanded(
           child: Stack(

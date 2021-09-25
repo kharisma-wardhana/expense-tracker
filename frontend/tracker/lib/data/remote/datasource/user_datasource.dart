@@ -17,7 +17,7 @@ abstract class UserDatasource {
 
 class UserDatasourceImpl extends UserDatasource {
   final CollectionReference userRef =
-      FirebaseFirestore.instance.collection("users");
+      FirebaseFirestore.instance.collection('users');
 
   Future<DocumentSnapshot> getUserData(String? uid) async {
     return await userRef.doc(uid).get();
@@ -47,9 +47,9 @@ class UserDatasourceImpl extends UserDatasource {
           return Right(user);
         }
       }
-      return Left(AppError(message: "User Not Found"));
+      return Left(AppError(message: 'User Not Found'));
     } on FirebaseAuthException catch (err) {
-      return Left(AppError(message: err.message ?? "FirebaseAuth Exception"));
+      return Left(AppError(message: err.message ?? 'FirebaseAuth Exception'));
     } catch (err) {
       return Left(AppError(message: err.toString()));
     }
@@ -84,19 +84,19 @@ class UserDatasourceImpl extends UserDatasource {
           return Right(user);
         } else {
           UserModel userModel = UserModel(
-            fullname: userCredential.user?.displayName ?? "",
-            username: userCredential.user?.displayName ?? "",
-            email: userCredential.user?.email ?? "",
+            fullname: userCredential.user?.displayName ?? '',
+            username: userCredential.user?.displayName ?? '',
+            email: userCredential.user?.email ?? '',
             isVerified: userCredential.user?.emailVerified ?? false,
-            imageURL: userCredential.user?.photoURL ?? "",
+            imageURL: userCredential.user?.photoURL ?? '',
           );
           await saveUserData(userCredential.user?.uid, userModel);
           return Right(userModel);
         }
       }
-      return Left(AppError(message: "User Not Found"));
+      return Left(AppError(message: 'User Not Found'));
     } on FirebaseAuthException catch (err) {
-      return Left(AppError(message: err.message ?? "Google Exception"));
+      return Left(AppError(message: err.message ?? 'Google Exception'));
     } catch (err) {
       return Left(AppError(message: err.toString()));
     }
@@ -115,9 +115,9 @@ class UserDatasourceImpl extends UserDatasource {
         await saveUserData(userCredential.user?.uid, userModel);
         return Right(userModel);
       }
-      return Left(AppError(message: "SignUp Exception"));
+      return Left(AppError(message: 'SignUp Exception'));
     } on FirebaseAuthException catch (err) {
-      return Left(AppError(message: err.message ?? "SignUp Exception"));
+      return Left(AppError(message: err.message ?? 'SignUp Exception'));
     } catch (err) {
       return Left(AppError(message: err.toString()));
     }

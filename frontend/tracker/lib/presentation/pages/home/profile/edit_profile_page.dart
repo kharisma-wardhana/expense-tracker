@@ -20,9 +20,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    _nameController = new TextEditingController();
-    _emailController = new TextEditingController();
-    _phoneController = new TextEditingController();
+    _nameController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneController = TextEditingController();
     AuthSuccess stateAuth = injector<AuthCubit>().state as AuthSuccess;
     _profilePictureURL = stateAuth.user.imageURL;
   }
@@ -40,14 +40,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: Column(
         children: [
           CustomTextField(
-            title: "Name",
+            title: 'Name',
             formField: TextFormField(
               controller: _nameController,
               validator: validateName,
             ),
           ),
           CustomTextField(
-            title: "Email",
+            title: 'Email',
             formField: TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
@@ -69,14 +69,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
             CircleAvatar(
               radius: 40,
               backgroundImage: _profilePictureURL.isEmpty
-                  ? Image.asset("assets/image/splash.png").image
+                  ? Image.asset('assets/image/splash.png').image
                   : NetworkImage(_profilePictureURL),
             ),
             const Divider(),
             _buildFormEdit(),
             const SizedBox(height: 18),
             ElevatedButton(
-              child: const Text("Save"),
+              child: const Text('Save'),
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

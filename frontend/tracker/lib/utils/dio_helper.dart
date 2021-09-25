@@ -14,11 +14,11 @@ class DioHelper {
       baseUrl: apiBaseUrl,
       connectTimeout: 50000,
       receiveTimeout: 30000,
-      contentType: "application/json",
+      contentType: 'application/json',
       headers: {
         HttpHeaders.authorizationHeader:
             'Bearer ${dotenv.env["NOTION_API_KEY"]}',
-        "Notion-Version": "2021-05-13"
+        'Notion-Version': '2021-05-13'
       },
     );
     Dio dio = Dio(options);

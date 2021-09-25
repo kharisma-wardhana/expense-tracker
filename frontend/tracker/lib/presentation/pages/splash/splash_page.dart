@@ -17,13 +17,13 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  Duration _splashTime = Duration(seconds: 3);
+  final Duration _splashTime = Duration(seconds: 3);
   PackageInfo _packageInfo = PackageInfo(
-    appName: "Unknown",
-    packageName: "Unknown",
-    buildNumber: "Unknown",
-    version: "Unknown",
-    buildSignature: "Unknown",
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    buildNumber: 'Unknown',
+    version: 'Unknown',
+    buildSignature: 'Unknown',
   );
 
   @override
@@ -41,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
     User? user = FirebaseAuth.instance.currentUser;
     String nextRoute = HomeRoute;
     var _pref = await SharedPreferences.getInstance();
-    bool? isFirstLaunch = _pref.getBool("firstLaunch");
+    bool? isFirstLaunch = _pref.getBool('firstLaunch');
 
     if (isFirstLaunch == null || isFirstLaunch == false) {
       nextRoute = OnboardingRoute;
@@ -70,7 +70,7 @@ class _SplashPageState extends State<SplashPage> {
                 width: 200.w,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/image/splash.png"),
+                    image: AssetImage('assets/image/splash.png'),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -81,7 +81,7 @@ class _SplashPageState extends State<SplashPage> {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(bottom: 32.h),
-              child: Text("App Version ${_packageInfo.version}"),
+              child: Text('App Version ${_packageInfo.version}'),
             ),
           ),
         ],

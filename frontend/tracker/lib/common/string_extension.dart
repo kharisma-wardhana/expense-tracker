@@ -2,7 +2,7 @@ part of 'style.dart';
 
 extension StringExtension on String {
   String intelliTrim() {
-    return this.length > 15 ? '${this.substring(0, 15)}...' : this;
+    return length > 15 ? '${substring(0, 15)}...' : this;
   }
 
   String toCurrencies() {

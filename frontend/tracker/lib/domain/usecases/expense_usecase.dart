@@ -19,6 +19,7 @@ class ExpenseUseCaseImpl extends ExpenseUseCase {
 
   ExpenseUseCaseImpl({required this.expenseRepo});
 
+  @override
   Future<Either<AppError, List<ExpenseEntity>>> getAllExpense() async {
     return await expenseRepo.getAllExpense();
   }

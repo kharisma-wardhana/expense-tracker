@@ -3,14 +3,16 @@ import 'package:tracker/common/style.dart';
 
 class CustomTextField extends StatelessWidget {
   final String title;
-  final String? iconAsset;
   final TextFormField formField;
+  final String? iconAsset;
+  final Widget? traillingIcon;
 
   const CustomTextField({
     Key? key,
     required this.title,
-    this.iconAsset,
     required this.formField,
+    this.iconAsset,
+    this.traillingIcon,
   }) : super(key: key);
 
   @override
@@ -25,9 +27,8 @@ class CustomTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
           ),
           Container(
-            height: 50,
-            padding: EdgeInsets.symmetric(
-              horizontal: 16,
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultSpacing * 2,
             ),
             decoration: BoxDecoration(
               color: primaryColor,
@@ -42,10 +43,13 @@ class CustomTextField extends StatelessWidget {
                           width: 17,
                         )
                       : SizedBox(),
-                  SizedBox(
-                    width: 16,
+                  const SizedBox(
+                    width: defaultSpacing,
                   ),
                   Expanded(child: formField),
+                  traillingIcon != null
+                      ? traillingIcon!
+                      : const SizedBox(height: defaultSpacing * 6),
                 ],
               ),
             ),

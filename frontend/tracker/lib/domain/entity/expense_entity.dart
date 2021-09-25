@@ -7,7 +7,7 @@ class ExpenseEntity extends Equatable {
   final double price;
   final DateTime date;
 
-  ExpenseEntity({
+  const ExpenseEntity({
     required this.name,
     this.description,
     this.category,

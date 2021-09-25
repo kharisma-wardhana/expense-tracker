@@ -18,7 +18,7 @@ class CategoryCubit extends Cubit<CategoryState> {
     final eitherResponse = await expenseUseCase.getCategoryExpense(category);
     return eitherResponse.fold(
       (err) => emit(CategoryFailed(err.message)),
-      (data) => data.length > 0
+      (data) => data.isNotEmpty
           ? emit(CategoryHasData(data))
           : emit(CategoryNoData()),
     );

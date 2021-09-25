@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/common/style.dart';
+import 'package:tracker/presentation/cubit/theme/theme_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BasePage extends StatelessWidget {
   final Widget body;
@@ -17,7 +19,6 @@ class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: primaryColor,
       appBar: appBar,
       body: Stack(
         children: [

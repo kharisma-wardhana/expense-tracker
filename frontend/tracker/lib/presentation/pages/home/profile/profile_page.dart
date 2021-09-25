@@ -49,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
         BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
             String _profilePictureURL =
-                state is AuthSuccess ? state.user.imageURL : "";
+                state is AuthSuccess ? state.user.imageURL : '';
             return GestureDetector(
               onTap: () {
                 Navigation.intent(EditProfileRoute);
@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CircleAvatar(
                 radius: 40,
                 backgroundImage: _profilePictureURL.isEmpty
-                    ? Image.asset("assets/image/splash.png").image
+                    ? Image.asset('assets/image/splash.png').image
                     : NetworkImage(_profilePictureURL),
               ),
             );
@@ -72,10 +72,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   Expanded(
                     child: BlocSelector<AuthCubit, AuthState, String>(
                       selector: (state) =>
-                          (state is AuthSuccess) ? state.user.username : "",
+                          (state is AuthSuccess) ? state.user.username : '',
                       builder: (context, username) {
                         return Text(
-                          username.isEmpty ? "Username" : username,
+                          username.isEmpty ? 'Username' : username,
                           style: Theme.of(context).textTheme.headline6,
                         );
                       },
@@ -89,15 +89,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     return Row(
                       children: [
                         Text(
-                          "${state.user.balanceAmount}".toCurrencies(),
+                          '${state.user.balanceAmount}'.toCurrencies(),
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                         Text(
-                          "${state.user.incomeAmount}".toCurrencies(),
+                          '${state.user.incomeAmount}'.toCurrencies(),
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                         Text(
-                          "${state.user.expenseAmount}".toCurrencies(),
+                          '${state.user.expenseAmount}'.toCurrencies(),
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ],
@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (state is AuthFailed) {
                     return Text(state.message);
                   }
-                  return Text("Empty");
+                  return Text('Empty');
                 },
               ),
             ],
@@ -122,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ListTile(
           leading: Icon(Icons.logout),
           title: Text(
-            "Sign Out",
+            'Sign Out',
             style: Theme.of(context).textTheme.bodyText2,
           ),
           onTap: _handleSignOut,
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Navigation.intent(SettingsRoute);
           },
           title: Text(
-            "Settings",
+            'Settings',
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
@@ -142,11 +142,11 @@ class _ProfilePageState extends State<ProfilePage> {
           onTap: () {
             showAboutDialog(
               context: context,
-              applicationVersion: "versi beta",
+              applicationVersion: 'versi beta',
             );
           },
           title: Text(
-            "About",
+            'About',
             style: Theme.of(context).textTheme.bodyText2,
           ),
         ),
@@ -163,18 +163,18 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Profile",
+              'Profile',
               style: Theme.of(context).textTheme.headline4,
             ),
             const Divider(),
-            SizedBox(height: defaultPadding),
+            const SizedBox(height: defaultPadding),
             _buildHeader(),
             const Divider(),
-            SizedBox(height: defaultPadding),
+            const SizedBox(height: defaultPadding),
             Expanded(
               child: _buildMenu(),
             ),
-            SizedBox(height: defaultPadding),
+            const SizedBox(height: defaultPadding),
           ],
         ),
       ),

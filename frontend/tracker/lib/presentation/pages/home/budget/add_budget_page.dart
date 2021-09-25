@@ -17,14 +17,14 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
   bool isLoading = false;
   bool isExpending = false;
   int selectedCategory = 0;
-  TextEditingController _amountController = new TextEditingController();
-  TextEditingController _descController = new TextEditingController();
+  TextEditingController _amountController = TextEditingController();
+  TextEditingController _descController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _amountController = new TextEditingController();
-    _descController = new TextEditingController();
+    _amountController = TextEditingController();
+    _descController = TextEditingController();
   }
 
   @override
@@ -39,20 +39,35 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
     return SafeArea(
       child: BasePage(
         isLoading: isLoading,
-        appBar: AppBar(
-          title: Text("Add Budget"),
-          backgroundColor: secondaryColor,
-        ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Type"),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_new,
+                  ),
+                ),
+                const SizedBox(width: defaultSpacing),
+                Text(
+                  'Add Budget',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ],
+            ),
+            const Divider(),
+            const SizedBox(height: defaultSpacing),
+            const Text('Type'),
             Row(
               children: [
                 GestureDetector(
                   onTap: () => setState(() => isExpending = false),
                   child: ChoiceChip(
-                    label: Text("Income"),
+                    label: Text('Income'),
                     selected: !isExpending,
                   ),
                 ),
@@ -60,14 +75,14 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                 GestureDetector(
                   onTap: () => setState(() => isExpending = true),
                   child: ChoiceChip(
-                    label: Text("Expense"),
+                    label: Text('Expense'),
                     selected: isExpending,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            const Text("Category"),
+            const SizedBox(height: defaultSpacing),
+            const Text('Category'),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -82,22 +97,32 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: defaultSpacing),
             CustomTextField(
-              title: "Amount",
+              title: 'Amount',
+              iconAsset: 'assets/image/splash.png',
               formField: TextFormField(
                 controller: _amountController,
                 keyboardType: TextInputType.number,
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Insert Price',
+                  hintStyle: Theme.of(context).textTheme.bodyText1,
+                ),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: defaultSpacing),
             CustomTextField(
-              title: "Description",
+              title: 'Description',
+              iconAsset: 'assets/image/splash.png',
               formField: TextFormField(
                 controller: _descController,
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Insert Description',
+                  hintStyle: Theme.of(context).textTheme.bodyText1,
+                ),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: defaultSpacing),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -111,17 +136,18 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                   // TODO call add budget api
                   PopUpDialog.showInfoSnackbar(
                     context,
-                    "Success Add Amount ${_amountController.text}",
+                    'Success Add Amount ${_amountController.text}',
                   );
 
                   setState(() {
-                    _amountController.text = "";
+                    _amountController.text = '';
+                    _descController.text = '';
                     isExpending = false;
                     selectedCategory = 0;
                     isLoading = false;
                   });
                 },
-                child: Text("Add"),
+                child: Text('Add'),
               ),
             )
           ],

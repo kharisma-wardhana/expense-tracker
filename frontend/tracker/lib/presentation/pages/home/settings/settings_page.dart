@@ -15,6 +15,16 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isReminderActive = false;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<ThemeCubit>().state is ThemeHasData
+        ? _isDarkTheme =
+            ((context.read<ThemeCubit>().state as ThemeHasData).themeData ==
+                darkTheme)
+        : _isDarkTheme = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -33,14 +43,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 const SizedBox(width: defaultSpacing),
                 Text(
-                  "Settings",
-                  style: Theme.of(context).textTheme.headline4,
+                  'Settings',
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ],
             ),
+            const Divider(),
+            const SizedBox(height: defaultSpacing),
             SwitchListTile(
               title: Text(
-                "Dark Theme",
+                'Dark Theme',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
               value: _isDarkTheme,
@@ -51,7 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SwitchListTile(
               title: Text(
-                "Reminder",
+                'Reminder',
                 style: Theme.of(context).textTheme.bodyText2,
               ),
               value: _isReminderActive,

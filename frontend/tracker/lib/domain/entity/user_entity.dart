@@ -11,7 +11,7 @@ class UserEntity extends Equatable {
   final double expenseAmount;
   final String password;
 
-  UserEntity({
+  const UserEntity({
     required this.fullname,
     required this.username,
     required this.email,

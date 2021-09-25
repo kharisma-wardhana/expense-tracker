@@ -13,14 +13,14 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  PageController _pageController = new PageController(initialPage: 0);
+  PageController _pageController = PageController(initialPage: 0);
   int selectedPage = 0;
   double maxWidth = 10;
 
   @override
   void initState() {
     super.initState();
-    _pageController = new PageController(initialPage: 0);
+    _pageController = PageController(initialPage: 0);
     selectedPage = 0;
   }
 
@@ -41,7 +41,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             width: 180,
             height: 200,
             child: Image.asset(
-              "assets/image/splash.png",
+              'assets/image/splash.png',
               fit: BoxFit.contain,
             ),
           ),
@@ -49,7 +49,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Content Description"),
+                Text('Content Description'),
               ],
             ),
           ),
@@ -62,10 +62,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   onPressed: () async {
                     SharedPreferences _pref =
                         await SharedPreferences.getInstance();
-                    _pref.setBool("firstLaunch", true);
+                    _pref.setBool('firstLaunch', true);
                     Navigation.intentReplacement(HomeRoute);
                   },
-                  child: Text("Get Started"),
+                  child: Text('Get Started'),
                 ),
               ],
             ),

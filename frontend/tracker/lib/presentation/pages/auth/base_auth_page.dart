@@ -10,8 +10,8 @@ class BaseAuthPage extends StatelessWidget {
   const BaseAuthPage({
     Key? key,
     required this.contentBody,
-    this.title = "",
-    this.subtitle = "",
+    this.title = '',
+    this.subtitle = '',
     this.isLoading = false,
   }) : super(key: key);
 
@@ -39,7 +39,7 @@ class BaseAuthPage extends StatelessWidget {
               padding: EdgeInsets.all(defaultPadding),
               child: Column(
                 children: [
-                  title == ""
+                  title == ''
                       ? SizedBox()
                       : Row(
                           children: [

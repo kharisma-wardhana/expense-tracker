@@ -18,9 +18,11 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
   bool _isSignInLoading = false;
+  bool _isShowPassword = false;
 
   @override
   void initState() {
@@ -30,6 +32,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void dispose() {
     _isSignInLoading = false;
+    _isShowPassword = false;
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -50,7 +53,10 @@ class _SignInPageState extends State<SignInPage> {
             },
             child: Text(
               'Sign up',
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    color: darkSecondaryColor,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           ),
         ],
@@ -68,7 +74,7 @@ class _SignInPageState extends State<SignInPage> {
             borderRadius: BorderRadius.circular(defaultBorderRadius),
           ),
         ),
-        onPressed: onPressed ?? null,
+        onPressed: onPressed,
         child: Text(
           title,
           style: Theme.of(context).textTheme.button?.copyWith(
@@ -102,8 +108,8 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return BaseAuthPage(
-      title: "Sign In",
-      subtitle: "Sign In to Continue",
+      title: 'Sign In',
+      subtitle: 'Sign In to Continue',
       isLoading: _isSignInLoading,
       contentBody: Expanded(
         child: Form(
@@ -114,29 +120,46 @@ class _SignInPageState extends State<SignInPage> {
                 title: 'Email address',
                 iconAsset: 'assets/icon/icon_email.png',
                 formField: TextFormField(
-                  validator: validateEmail,
                   controller: _emailController,
+                  validator: validateEmail,
+                  style: Theme.of(context).textTheme.bodyText1,
                   decoration: InputDecoration.collapsed(
                     hintText: 'Your Email',
-                    hintStyle: Theme.of(context).textTheme.subtitle2,
+                    hintStyle: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
               ),
-              SizedBox(height: defaultSpacing),
+              const SizedBox(height: defaultSpacing),
               CustomTextField(
                 title: 'Password',
                 iconAsset: 'assets/icon/icon_password.png',
                 formField: TextFormField(
                   controller: _passwordController,
-                  validator: validatePassword,
+                  validator: (val) {
+                    String? err = validatePassword(val);
+                    if (err != null) {
+                      setState(() => _errorMessage = err);
+                    }
+                    return null;
+                  },
+                  style: Theme.of(context).textTheme.bodyText1,
                   decoration: InputDecoration.collapsed(
                     hintText: 'Your Password',
-                    hintStyle: Theme.of(context).textTheme.subtitle2,
+                    hintStyle: Theme.of(context).textTheme.bodyText1,
                   ),
-                  obscureText: true,
+                  obscureText: !_isShowPassword,
+                ),
+                traillingIcon: IconButton(
+                  onPressed: () {
+                    setState(() => _isShowPassword = !_isShowPassword);
+                  },
+                  icon: Icon(
+                    _isShowPassword ? Icons.visibility : Icons.visibility_off,
+                    color: secondaryColor,
+                  ),
                 ),
               ),
-              SizedBox(height: defaultSpacing),
+              const SizedBox(height: defaultSpacing),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -144,18 +167,25 @@ class _SignInPageState extends State<SignInPage> {
                     onTap: () {
                       Navigation.intent(ForgotPasswordRoute);
                     },
-                    child: Text("Forgot password?"),
+                    child: Text('Forgot password?'),
                   ),
                 ],
               ),
-              SizedBox(height: defaultSpacing),
-              Spacer(),
+              const SizedBox(height: defaultSpacing),
+              _errorMessage.isNotEmpty
+                  ? Text(
+                      _errorMessage,
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : SizedBox(),
+              const SizedBox(height: defaultSpacing),
+              const Spacer(),
               _buildButtonSignIn('Sign In', () {
                 if (_formKey.currentState!.validate()) _signIn();
               }),
-              SizedBox(height: defaultSpacing),
+              const SizedBox(height: defaultSpacing),
               _buildButtonSignIn('Google', () => _signIn(isGoogleSignIn: true)),
-              SizedBox(height: defaultSpacing),
+              const SizedBox(height: defaultSpacing),
               _buildBottomContent(),
             ],
           ),
